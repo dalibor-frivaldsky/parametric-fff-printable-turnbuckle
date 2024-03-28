@@ -2,10 +2,16 @@ MM = 1.0
 
 class Standard:
     M4 = 4*MM
+    M8_THREAD_PITCH_COARSE = 0.7*MM
 
     M5 = 5*MM
+    M8_THREAD_PITCH_COARSE = 0.8*MM
 
     M6 = 6*MM
+    M8_THREAD_PITCH_COARSE = 1.0*MM
+
+    M8 = 8*MM
+    M8_THREAD_PITCH_COARSE = 1.25*MM
     
     M10 = 10*MM
     M10_THREAD_PITCH_COARSE = 1.5*MM
@@ -15,6 +21,9 @@ class Standard:
 
 class Fdm(Standard):
     _TOLERANCE = 0.2*MM / 2
+
+    M8_INTERNAL = Standard.M8 + _TOLERANCE
+    M8_EXTERNAL = Standard.M8 - _TOLERANCE
 
     M10_INTERNAL = Standard.M10 + _TOLERANCE
     M10_EXTERNAL = Standard.M10 - _TOLERANCE
