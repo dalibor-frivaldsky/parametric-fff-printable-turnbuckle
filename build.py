@@ -1,34 +1,62 @@
+import core.iso as iso
+from core.iso import MM
+
+# Base turnbuckle parameters
+thread_diameter_external = iso.Fdm.M10_EXTERNAL
+thread_diameter_internal = iso.Fdm.M10_INTERNAL
+thread_pitch = iso.Standard.M10_THREAD_PITCH_COARSE
+take_up_length = 100*MM
+
+# Body parameters
+handle_diameter = 20*MM
+
+# Eye end fitting parameters
+eye_inner_radius = 8*MM
+
+
 import core.config as _config
 _config.IS_DEVELOPMENT_MODE = False
 
 import cadquery as cq
-import core.iso as iso
-from core.iso import MM
+import timeit
 from pathlib import Path
 from turnbuckle import *
+from typing import Any, Callable
 
-body_part = body(
-    take_up_length=100*MM,
-    thread_diameter=iso.Fdm.M10_INTERNAL,
-    thread_pitch=iso.Standard.M10_THREAD_PITCH_COARSE,
-    handle_diameter=20*MM
-)
 
-eye_end_fitting_part_left = eye_end_fitting(
-    diameter=iso.Fdm.M10_EXTERNAL,
-    pitch=iso.Standard.M10_THREAD_PITCH_COARSE,
-    take_up_length=100*MM,
-    eye_inner_radius=8*MM,
+def _timeit(fn: Callable) -> Any:
+    start_time = timeit.default_timer()
+    part = fn()
+    elapsed_time = timeit.default_timer() - start_time
+    print(f'Took: {elapsed_time:.3f}s')
+    print()
+    return part
+
+print('Building body')
+body_part = _timeit(lambda: body(
+    take_up_length=take_up_length,
+    thread_diameter=thread_diameter_internal,
+    thread_pitch=thread_pitch,
+    handle_diameter=handle_diameter
+))
+
+print('Building left-threaded eye end fitting')
+eye_end_fitting_part_left = _timeit(lambda:eye_end_fitting(
+    diameter=thread_diameter_external,
+    pitch=thread_pitch,
+    take_up_length=take_up_length,
+    eye_inner_radius=eye_inner_radius,
     hand='left'
-).rotateAboutCenter((1, 0, 0), -90)
+).rotateAboutCenter((1, 0, 0), -90))
 
-eye_end_fitting_part_right = eye_end_fitting(
-    diameter=iso.Fdm.M10_EXTERNAL,
-    pitch=iso.Standard.M10_THREAD_PITCH_COARSE,
-    take_up_length=100*MM,
-    eye_inner_radius=8*MM,
+print('Building right-threaded eye end fitting')
+eye_end_fitting_part_right = _timeit(lambda: eye_end_fitting(
+    diameter=thread_diameter_external,
+    pitch=thread_pitch,
+    take_up_length=take_up_length,
+    eye_inner_radius=eye_inner_radius,
     hand='right'
-).rotateAboutCenter((1, 0, 0), -90)
+).rotateAboutCenter((1, 0, 0), -90))
 
 format = 'step'
 build_dir = Path('.') / 'build' / format
