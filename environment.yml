@@ -1,0 +1,3 @@
+name: turnbuckle
+dependencies:
+  - cadquery=2.4.0

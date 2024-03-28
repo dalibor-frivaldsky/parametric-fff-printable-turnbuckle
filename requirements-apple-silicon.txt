@@ -1,0 +1,2 @@
+ipykernel
+ocp_vscode==2.2.2
