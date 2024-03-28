@@ -1,5 +1,5 @@
 # Parametric FFF-printable turnbuckle
-This project allows you to created FFF-printable (3D-printable) model of a turnbuckle made of body and eye end fittings. You can parametrize many properties, including thread diameter, take-up length, eye diameter and others.
+This project allows you to create FFF-printable (3D-printable) model of a turnbuckle made of body and eye end fittings. You can parametrize many properties, including thread diameter, take-up length, eye diameter and others.
 
 ## Quick start
 The link "launch binder" will take you to a Jupyter notebook environment prepared for building your turnbuckle model. Once there, follow the instructions on how to start the build process and download the resulting model files.
@@ -7,7 +7,7 @@ The link "launch binder" will take you to a Jupyter notebook environment prepare
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/dalibor-frivaldsky/parametric-fff-printable-turnbuckle/main?labpath=build.ipynb)
 
 ## Printing instructions
-PLA shows comparably high tensile strength to other FFF materials and is easy to print with. The project was developed on Prusa MK4 using PrusaSlicer, so the recommended settings are based on this fact.
+PLA shows [comparably high tensile strength][1] to other FFF materials and is easy to print with. The project was developed on Prusa MK4 using PrusaSlicer, so the recommended settings are based on this fact.
 
 - Material: PLA, Printer: Prusa MK4, Slicer: PrusaSlicer >= 2.6
   - perimeters: 3
@@ -26,7 +26,8 @@ The project is being developed in VS Code using OCP CAD Viewer plugin - https://
 - `pip install -r requirements-dev.txt`
 - `code .`
 - install the OCP CAD Viewer plugin
-- open `turnbuckle.py` file, which should also open the OCP viewer window
+- click the "OCP" icon on the left panel (the location of Explorer, Source Control, ...)
+- open the `turnbuckle.py` file, which should also open the OCP viewer window. All libraries (except for "build123d") should show as installed.
 - there are Jupyter Notebook comment markings in the code to allow for easy iterative development of the models
 - run the very first one to initiate the notebook environment
 - run the cell with the implementation of a part function, which should show the model in the OCP viewer window
@@ -34,3 +35,6 @@ The project is being developed in VS Code using OCP CAD Viewer plugin - https://
 
 ## Acknowledgements
 - the code in `core/metric_threads.py`, created by [Nerius](https://sourceforge.net/u/nerius/profile/), was taken from https://sourceforge.net/p/nl10/code/HEAD/tree/cq-code/common/metric_threads.py
+
+## References
+- [1]: [CNC Kitchen: The BEST 3D printing material? Comparing PLA, PETG & ASA (ABS)](https://www.youtube.com/watch?v=ycGDR752fT0)
