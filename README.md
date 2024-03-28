@@ -10,6 +10,7 @@ The link "launch binder" will take you to a Jupyter notebook environment prepare
 PLA shows [comparably high tensile strength][1] to other FFF materials and is easy to print with. The project was developed on Prusa MK4 using PrusaSlicer, so the recommended settings are based on this fact.
 
 - Material: PLA, Printer: Prusa MK4, Slicer: PrusaSlicer >= 2.6
+  - layer height: 0.15mm
   - perimeters: 3
   - infill: 15%
   - infill type: gyroid
