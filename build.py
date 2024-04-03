@@ -13,6 +13,9 @@ handle_diameter = 20*MM
 # Eye end fitting parameters
 eye_inner_radius = 8*MM
 
+# Hook end fitting parameters
+hook_inner_radius = 8*MM
+
 
 import core.config as _config
 _config.IS_DEVELOPMENT_MODE = False
@@ -58,9 +61,29 @@ eye_end_fitting_part_right = _timeit(lambda: eye_end_fitting(
     hand='right'
 ).rotateAboutCenter((1, 0, 0), -90))
 
+print('Building left-threaded hook end fitting')
+hook_end_fitting_part_left = _timeit(lambda: hook_end_fitting(
+    diameter=thread_diameter_external,
+    pitch=thread_pitch,
+    take_up_length=take_up_length,
+    hook_inner_radius=hook_inner_radius,
+    hand='left'
+).rotateAboutCenter((1, 0, 0), -90))
+
+print('Building right-threaded hook end fitting')
+hook_end_fitting_part_right = _timeit(lambda: hook_end_fitting(
+    diameter=thread_diameter_external,
+    pitch=thread_pitch,
+    take_up_length=take_up_length,
+    hook_inner_radius=hook_inner_radius,
+    hand='right'
+).rotateAboutCenter((1, 0, 0), -90))
+
 model_format = 'step'
 build_dir = Path('.') / 'build' / model_format
 build_dir.mkdir(parents=True, exist_ok=True)
 cq.exporters.export(body_part, str(build_dir / f'body.{model_format}'))
 cq.exporters.export(eye_end_fitting_part_left, str(build_dir / f'eye_end_fittng_left.{model_format}'))
 cq.exporters.export(eye_end_fitting_part_right, str(build_dir / f'eye_end_fittng_right.{model_format}'))
+cq.exporters.export(hook_end_fitting_part_left, str(build_dir / f'hook_end_fittng_left.{model_format}'))
+cq.exporters.export(hook_end_fitting_part_right, str(build_dir / f'hook_end_fittng_right.{model_format}'))

@@ -181,3 +181,93 @@ def eye_end_fitting(
         show(fitting.rotateAboutCenter((1, 0, 0), -90))
 # %%
     return fitting
+
+def hook_end_fitting(
+    diameter: float,
+    pitch: float,
+    take_up_length: float,
+    hook_inner_radius: float,
+    hand: str
+):
+# %%
+    if _config.IS_DEVELOPMENT_MODE:
+        diameter = 10*MM
+        pitch = 1.5*MM
+        take_up_length = 100*MM
+        hook_inner_radius = 8*MM
+        hand = 'left'
+
+    no_thread_length = 5*MM
+
+    thickness = _cutter_thickness(
+        metric_thread_minor_radius(diameter, pitch)*2,
+        30
+    )
+    cutter = (
+        cq.Workplane('XY')
+        .rect(2*(diameter+hook_inner_radius), thickness)
+        .extrude(
+            take_up_length/2
+            + no_thread_length
+            + diameter
+            + hook_inner_radius
+        )
+    )
+
+    hand_marker = _hand_marker(thickness/2, hand).mirror('XZ')
+
+    thread = (
+        cq.Workplane('XY')
+        .union(external_metric_thread(
+            diameter=diameter,
+            pitch=pitch,
+            length=take_up_length/2,
+            bottom_lead_in=True,
+            top_lead_in=False,
+            base_cylinder=True
+        ))
+        .intersect(cutter)
+        .cut(hand_marker)
+    )
+    if hand == 'left':
+        thread = thread.mirror(THREAD_MIRROR_PLANE)
+
+    hook_center_radius = hook_inner_radius + diameter/2
+    path = (
+        cq.Workplane('XZ')
+        .vLineTo(no_thread_length)
+        .tangentArcPoint((
+            hook_center_radius - (hook_center_radius * math.sqrt(2)/2),
+            hook_center_radius * math.sqrt(2)/2
+        ))
+        .line(
+            (hook_center_radius * math.sqrt(2)/2) - (hook_center_radius - (hook_center_radius * math.sqrt(2)/2)),
+            (hook_center_radius * math.sqrt(2)/2) - (hook_center_radius - (hook_center_radius * math.sqrt(2)/2))
+        )
+        .tangentArcPoint((
+            -(hook_center_radius * math.sqrt(2)),
+            hook_center_radius * math.sqrt(2)
+        ))
+        .line(
+            (hook_center_radius - (hook_center_radius * math.sqrt(2)/2)) - (hook_center_radius * math.sqrt(2)/2),
+            (hook_center_radius - (hook_center_radius * math.sqrt(2)/2)) - (hook_center_radius * math.sqrt(2)/2)
+        )
+    )
+    
+    fitting = (
+        cq.Workplane('XY')
+        .circle(diameter/2)
+        .sweep(path)
+        .edges(
+            cq.selectors.NearestToPointSelector((-100, 0, 0))
+        )
+        .chamfer(2*MM)
+        .intersect(cutter)
+        .translate((0, 0, take_up_length/2))
+        .union(thread)
+    )
+
+    if _config.IS_DEVELOPMENT_MODE:
+        show(fitting.rotateAboutCenter((1, 0, 0), -90))
+# %%
+    return fitting
