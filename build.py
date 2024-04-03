@@ -83,7 +83,7 @@ model_format = 'step'
 build_dir = Path('.') / 'build' / model_format
 build_dir.mkdir(parents=True, exist_ok=True)
 cq.exporters.export(body_part, str(build_dir / f'body.{model_format}'))
-cq.exporters.export(eye_end_fitting_part_left, str(build_dir / f'eye_end_fittng_left.{model_format}'))
-cq.exporters.export(eye_end_fitting_part_right, str(build_dir / f'eye_end_fittng_right.{model_format}'))
-cq.exporters.export(hook_end_fitting_part_left, str(build_dir / f'hook_end_fittng_left.{model_format}'))
-cq.exporters.export(hook_end_fitting_part_right, str(build_dir / f'hook_end_fittng_right.{model_format}'))
+cq.exporters.export(eye_end_fitting_part_left, str(build_dir / f'eye_end_fitting_left.{model_format}'))
+cq.exporters.export(eye_end_fitting_part_right, str(build_dir / f'eye_end_fitting_right.{model_format}'))
+cq.exporters.export(hook_end_fitting_part_left, str(build_dir / f'hook_end_fitting_left.{model_format}'))
+cq.exporters.export(hook_end_fitting_part_right, str(build_dir / f'hook_end_fitting_right.{model_format}'))
